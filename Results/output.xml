@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.1.2 (Python 3.7.7 on win32)" generated="20200605 15:46:52.599" rpa="false">
+<suite id="s1" name="TC 005 PutRequest" source="C:\Users\kajetanmellerowicz\PycharmProjects\RobotAPIAutomation\TC_005_PutRequest.robot">
+<test id="s1-t1" name="TC_005 Create New Resource and update it">
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>AppData</arg>
+<arg>${Base_URL}</arg>
+</arguments>
+<msg timestamp="20200605 15:46:52.796" level="INFO">Creating Session using : alias=AppData, url=http://thetestingworldapi.com/, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20200605 15:46:52.796" endtime="20200605 15:46:52.797"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>first_name=Tester</arg>
+<arg>middle_name=X</arg>
+<arg>last_name=Earth</arg>
+<arg>date_of_birth=31/12/1999</arg>
+</arguments>
+<assign>
+<var>&amp;{body}</var>
+</assign>
+<msg timestamp="20200605 15:46:52.797" level="INFO">&amp;{body} = { first_name=Tester | middle_name=X | last_name=Earth | date_of_birth=31/12/1999 }</msg>
+<status status="PASS" starttime="20200605 15:46:52.797" endtime="20200605 15:46:52.797"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+</arguments>
+<assign>
+<var>&amp;{header}</var>
+</assign>
+<msg timestamp="20200605 15:46:52.798" level="INFO">&amp;{header} = { Content-Type=application/json }</msg>
+<status status="PASS" starttime="20200605 15:46:52.798" endtime="20200605 15:46:52.798"></status>
+</kw>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>AppData</arg>
+<arg>${URI}</arg>
+<arg>data=${body}</arg>
+<arg>headers=${header}</arg>
+</arguments>
+<assign>
+<var>${response}</var>
+</assign>
+<msg timestamp="20200605 15:46:53.189" level="INFO">POST Request : url=http://thetestingworldapi.com//api/studentsDetails 
+ path_url=//api/studentsDetails 
+ headers={'User-Agent': 'python-requests/2.23.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '97'} 
+ body={"first_name": "Tester", "middle_name": "X", "last_name": "Earth", "date_of_birth": "31/12/1999"} 
+ </msg>
+<msg timestamp="20200605 15:46:53.191" level="INFO">POST Response : url=http://thetestingworldapi.com//api/studentsDetails 
+ status=201, reason=Created 
+ body={"id":269190,"first_name":"Tester","middle_name":"X","last_name":"Earth","date_of_birth":"31/12/1999"} 
+ </msg>
+<msg timestamp="20200605 15:46:53.191" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<status status="PASS" starttime="20200605 15:46:52.798" endtime="20200605 15:46:53.191"></status>
+</kw>
+<kw name="Convert To String" library="BuiltIn">
+<doc>Converts the given item to a Unicode string.</doc>
+<arguments>
+<arg>${response.status_code}</arg>
+</arguments>
+<assign>
+<var>${code}</var>
+</assign>
+<msg timestamp="20200605 15:46:53.191" level="INFO">${code} = 201</msg>
+<status status="PASS" starttime="20200605 15:46:53.191" endtime="20200605 15:46:53.191"></status>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${code}</arg>
+<arg>201</arg>
+</arguments>
+<status status="PASS" starttime="20200605 15:46:53.191" endtime="20200605 15:46:53.192"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>${response.content}</arg>
+</arguments>
+<status status="PASS" starttime="20200605 15:46:53.192" endtime="20200605 15:46:53.193"></status>
+</kw>
+<kw name="To Json" library="RequestsLibrary">
+<doc>Convert a string to a JSON object</doc>
+<arguments>
+<arg>${response.content}</arg>
+</arguments>
+<assign>
+<var>${jsonresponse}</var>
+</assign>
+<msg timestamp="20200605 15:46:53.193" level="INFO">To JSON using : content={"id":269190,"first_name":"Tester","middle_name":"X","last_name":"Earth","date_of_birth":"31/12/1999"} </msg>
+<msg timestamp="20200605 15:46:53.193" level="INFO">To JSON using : pretty_print=False </msg>
+<msg timestamp="20200605 15:46:53.193" level="INFO">${jsonresponse} = {'id': 269190, 'first_name': 'Tester', 'middle_name': 'X', 'last_name': 'Earth', 'date_of_birth': '31/12/1999'}</msg>
+<status status="PASS" starttime="20200605 15:46:53.193" endtime="20200605 15:46:53.193"></status>
+</kw>
+<kw name="Get Value From Json" library="JSONLibrary">
+<doc>Get Value From JSON using JSONPath</doc>
+<arguments>
+<arg>${jsonresponse}</arg>
+<arg>$..id</arg>
+</arguments>
+<assign>
+<var>@{id_list}</var>
+</assign>
+<msg timestamp="20200605 15:46:53.217" level="INFO">@{id_list} = [ 269190 ]</msg>
+<status status="PASS" starttime="20200605 15:46:53.195" endtime="20200605 15:46:53.217"></status>
+</kw>
+<kw name="Get From List" library="Collections">
+<doc>Returns the value specified with an ``index`` from ``list``.</doc>
+<arguments>
+<arg>${id_list}</arg>
+<arg>0</arg>
+</arguments>
+<assign>
+<var>${id}</var>
+</assign>
+<msg timestamp="20200605 15:46:53.218" level="INFO">${id} = 269190</msg>
+<status status="PASS" starttime="20200605 15:46:53.218" endtime="20200605 15:46:53.218"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>id=${id}</arg>
+<arg>first_name=Tester</arg>
+<arg>middle_name=534_u7</arg>
+<arg>last_name=Earth</arg>
+<arg>date_of_birth=31/12/1999</arg>
+</arguments>
+<assign>
+<var>&amp;{body2}</var>
+</assign>
+<msg timestamp="20200605 15:46:53.219" level="INFO">&amp;{body2} = { id=269190 | first_name=Tester | middle_name=534_u7 | last_name=Earth | date_of_birth=31/12/1999 }</msg>
+<status status="PASS" starttime="20200605 15:46:53.218" endtime="20200605 15:46:53.219"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>id=${id}</arg>
+</arguments>
+<assign>
+<var>&amp;{param}</var>
+</assign>
+<msg timestamp="20200605 15:46:53.220" level="INFO">&amp;{param} = { id=269190 }</msg>
+<status status="PASS" starttime="20200605 15:46:53.219" endtime="20200605 15:46:53.220"></status>
+</kw>
+<kw name="Put Request" library="RequestsLibrary">
+<doc>Send a PUT request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>AppData</arg>
+<arg>${URI}</arg>
+<arg>params=&amp;{param}</arg>
+<arg>data=${body2}</arg>
+<arg>headers=${header}</arg>
+</arguments>
+<assign>
+<var>${response2}</var>
+</assign>
+<msg timestamp="20200605 15:46:53.413" level="INFO">PUT Request : url=http://thetestingworldapi.com//api/studentsDetails?id=269190 
+ path_url=//api/studentsDetails?id=269190 
+ headers={'User-Agent': 'python-requests/2.23.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '116'} 
+ body={"id": 269190, "first_name": "Tester", "middle_name": "534_u7", "last_name": "Earth", "date_of_birth": "31/12/1999"} 
+ </msg>
+<msg timestamp="20200605 15:46:53.413" level="INFO">PUT Response : url=http://thetestingworldapi.com//api/studentsDetails?id=269190 
+ status=200, reason=OK 
+ body={"status":"true","msg":"update  data success"} 
+ </msg>
+<msg timestamp="20200605 15:46:53.414" level="INFO">${response2} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20200605 15:46:53.220" endtime="20200605 15:46:53.414"></status>
+</kw>
+<kw name="Convert To String" library="BuiltIn">
+<doc>Converts the given item to a Unicode string.</doc>
+<arguments>
+<arg>${response.status_code}</arg>
+</arguments>
+<assign>
+<var>${code}</var>
+</assign>
+<msg timestamp="20200605 15:46:53.417" level="INFO">${code} = 201</msg>
+<status status="PASS" starttime="20200605 15:46:53.416" endtime="20200605 15:46:53.418"></status>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${code}</arg>
+<arg>201</arg>
+</arguments>
+<status status="PASS" starttime="20200605 15:46:53.419" endtime="20200605 15:46:53.420"></status>
+</kw>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>AppData</arg>
+<arg>${URI}</arg>
+<arg>params=&amp;{param}</arg>
+</arguments>
+<assign>
+<var>${response3}</var>
+</assign>
+<msg timestamp="20200605 15:46:53.642" level="INFO">GET Request : url=http://thetestingworldapi.com//api/studentsDetails?id=269190 
+ path_url=//api/studentsDetails?id=269190 
+ headers={'User-Agent': 'python-requests/2.23.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20200605 15:46:53.642" level="INFO">GET Response : url=http://thetestingworldapi.com//api/studentsDetails?id=269190 
+ status=200, reason=OK 
+ body={"status":"true","data":{"id":269190,"first_name":"Tester","middle_name":"534_u7","last_name":"Earth","date_of_birth":"31/12/1999"}} 
+ </msg>
+<msg timestamp="20200605 15:46:53.642" level="INFO">${response3} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20200605 15:46:53.430" endtime="20200605 15:46:53.643"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>${response3.content}</arg>
+</arguments>
+<status status="PASS" starttime="20200605 15:46:53.644" endtime="20200605 15:46:53.646"></status>
+</kw>
+<doc>update after the post, and get it</doc>
+<status status="PASS" starttime="20200605 15:46:52.796" endtime="20200605 15:46:53.648" critical="yes"></status>
+</test>
+<status status="PASS" starttime="20200605 15:46:52.601" endtime="20200605 15:46:53.652"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0">Critical Tests</stat>
+<stat pass="1" fail="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" id="s1" name="TC 005 PutRequest">TC 005 PutRequest</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
